@@ -115,3 +115,22 @@ for name, df in imus.items():
 
     print(f"{name}: correlation {a_mag.corr(b_mag):.3f} -> {a_mag.corr(b_fixed_mag):.3f}; "
           f"average difference {(b_mag - a_mag).mean():+.2f} -> {(b_fixed_mag - a_mag).mean():+.2f}")
+
+df = imus["radius"]
+a = df[adxl_cols].rolling(10, center=True).mean()
+b = df[bmi_cols].rolling(10, center=True).mean()
+a.columns = b.columns = [0, 1, 2]
+b_fixed = b - (b - a).mean()
+
+fig, axes = plt.subplots(2, 1, figsize=(10, 6), sharex=True)
+panels = [("Before offset correction", b), ("After offset correction", b_fixed)]
+for ax, (title, bmi) in zip(axes, panels):
+    ax.plot(df["t"], (a ** 2).sum(axis=1) ** 0.5, label="ADXL355")
+    ax.plot(df["t"], (bmi ** 2).sum(axis=1) ** 0.5, label="BMI160")
+    ax.set_title(f"radius: {title}")
+    ax.set_ylabel("m/s²")
+    ax.legend()
+axes[-1].set_xlabel("Time (s)")
+fig.tight_layout()
+fig.savefig("charts/radius_before_after.png", dpi=150)
+print("Saved charts/radius_before_after.png")
