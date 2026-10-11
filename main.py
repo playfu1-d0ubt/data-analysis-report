@@ -59,3 +59,18 @@ axes[-1].set_xlabel("Time (s)")
 fig.tight_layout()
 fig.savefig("charts/accel_agreement.png", dpi=150)
 print("Saved charts/accel_agreement.png")
+
+print("\nSpike check")
+for name, df in imus.items():
+    adxl_mag = (df[adxl_cols] ** 2).sum(axis=1) ** 0.5
+    bmi_mag = (df[bmi_cols] ** 2).sum(axis=1) ** 0.5
+
+    peak = adxl_mag.idxmax()
+    print(f"{name}: ADXL355 peak {adxl_mag.max():.1f} at {df.loc[peak, 't']:.1f}s "
+          f"(median {adxl_mag.median():.2f})")
+
+    # keep only rows where both sensors are within 5 of their medians
+    calm = ((adxl_mag - adxl_mag.median()).abs() < 5) & ((bmi_mag - bmi_mag.median()).abs() < 5)
+    print(f"   removed {(~calm).sum()} rows; correlation {adxl_mag.corr(bmi_mag):.3f} "
+          f"-> {adxl_mag[calm].corr(bmi_mag[calm]):.3f}; "
+          f"ADXL355 spread {adxl_mag.std():.3f} -> {adxl_mag[calm].std():.3f}")
