@@ -33,3 +33,12 @@ for name, df in imus.items():
     corr = adxl_mag.corr(bmi_mag)
     print(f"{name}: ADXL355 avg {adxl_mag.mean():.2f}, BMI160 avg {bmi_mag.mean():.2f}, "
           f"difference {bmi_mag.mean() - adxl_mag.mean():+.2f}, correlation {corr:.3f}")
+
+gyro_cols = ["GYRO_0", "GYRO_1", "GYRO_2"]
+
+print("\nHow much each segment moves")
+for name, df in imus.items():
+    adxl_mag = (df[adxl_cols] ** 2).sum(axis=1) ** 0.5
+    gyro_mag = (df[gyro_cols] ** 2).sum(axis=1) ** 0.5
+    print(f"{name}: accel spread {adxl_mag.std():.3f}, "
+          f"avg gyro {gyro_mag.mean():.3f}, max gyro {gyro_mag.max():.3f}")
