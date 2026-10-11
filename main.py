@@ -1,4 +1,8 @@
 import pandas as pd
+import matplotlib.pyplot as plt
+import os
+
+os.makedirs("charts", exist_ok=True)
 
 imu_names = ["humerus", "radius", "carpus", "digitus"]
 
@@ -42,3 +46,16 @@ for name, df in imus.items():
     gyro_mag = (df[gyro_cols] ** 2).sum(axis=1) ** 0.5
     print(f"{name}: accel spread {adxl_mag.std():.3f}, "
           f"avg gyro {gyro_mag.mean():.3f}, max gyro {gyro_mag.max():.3f}")
+
+fig, axes = plt.subplots(2, 1, figsize=(10, 6), sharex=True)
+for ax, name in zip(axes, ["humerus", "radius"]):
+    df = imus[name]
+    ax.plot(df["t"], (df[adxl_cols] ** 2).sum(axis=1) ** 0.5, label="ADXL355", linewidth=0.8)
+    ax.plot(df["t"], (df[bmi_cols] ** 2).sum(axis=1) ** 0.5, label="BMI160", linewidth=0.8)
+    ax.set_title(f"{name}: acceleration magnitude")
+    ax.set_ylabel("m/s²")
+    ax.legend()
+axes[-1].set_xlabel("Time (s)")
+fig.tight_layout()
+fig.savefig("charts/accel_agreement.png", dpi=150)
+print("Saved charts/accel_agreement.png")
