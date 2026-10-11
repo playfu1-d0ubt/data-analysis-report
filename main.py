@@ -23,5 +23,13 @@ for name, df in imus.items():
           f"{1 / dt.mean():.1f} Hz, biggest gap {dt.max() * 1000:.0f} ms, "
           f"{missing} jumps in INDEX")
 
-print(f"robot: {len(robot)} rows")
-print(robot.describe().T[["min", "max"]])
+adxl_cols = ["ACCEL_ADXL355_0", "ACCEL_ADXL355_1", "ACCEL_ADXL355_2"]
+bmi_cols = ["ACCEL_BMI160_0", "ACCEL_BMI160_1", "ACCEL_BMI160_2"]
+
+print("\nAccelerometer agreement")
+for name, df in imus.items():
+    adxl_mag = (df[adxl_cols] ** 2).sum(axis=1) ** 0.5
+    bmi_mag = (df[bmi_cols] ** 2).sum(axis=1) ** 0.5
+    corr = adxl_mag.corr(bmi_mag)
+    print(f"{name}: ADXL355 avg {adxl_mag.mean():.2f}, BMI160 avg {bmi_mag.mean():.2f}, "
+          f"difference {bmi_mag.mean() - adxl_mag.mean():+.2f}, correlation {corr:.3f}")
