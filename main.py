@@ -91,3 +91,12 @@ for name, df in imus.items():
 
     print(f"{name}: smoothed correlation {a.corr(b):.3f}; "
           f"best {best_corr:.3f} at shift {best_lag} readings ({best_lag * 10} ms)")
+
+print("\nPer-axis comparison (smoothed)")
+for name, df in imus.items():
+    print(name)
+    for i in range(3):
+        a = df[adxl_cols[i]].rolling(10, center=True).mean()
+        b = df[bmi_cols[i]].rolling(10, center=True).mean()
+        print(f"   axis {i}: correlation {a.corr(b):.3f}, "
+              f"average offset (BMI160 - ADXL355) {(b - a).mean():+.2f}")
