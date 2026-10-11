@@ -100,3 +100,18 @@ for name, df in imus.items():
         b = df[bmi_cols[i]].rolling(10, center=True).mean()
         print(f"   axis {i}: correlation {a.corr(b):.3f}, "
               f"average offset (BMI160 - ADXL355) {(b - a).mean():+.2f}")
+
+print("\nMagnitude agreement before/after removing per-axis offset (smoothed)")
+for name, df in imus.items():
+    a = df[adxl_cols].rolling(10, center=True).mean()
+    b = df[bmi_cols].rolling(10, center=True).mean()
+    a.columns = b.columns = [0, 1, 2]
+
+    b_fixed = b - (b - a).mean()
+
+    a_mag = (a ** 2).sum(axis=1) ** 0.5
+    b_mag = (b ** 2).sum(axis=1) ** 0.5
+    b_fixed_mag = (b_fixed ** 2).sum(axis=1) ** 0.5
+
+    print(f"{name}: correlation {a_mag.corr(b_mag):.3f} -> {a_mag.corr(b_fixed_mag):.3f}; "
+          f"average difference {(b_mag - a_mag).mean():+.2f} -> {(b_fixed_mag - a_mag).mean():+.2f}")
