@@ -42,4 +42,8 @@ The top panel shows the radius sensor's two accelerometers sitting apart. In the
 
 ## Data
 
-OpenAXES robot-arm IMU dataset: https://github.com/OpenAXES-IMU/OpenAXES. Please check the dataset's own page for its licence and how to cite it.
+This project uses the OpenAXES robot-arm IMU dataset by Fritz Webering, Christian Fahnemann, Nils Stanislawski, available at https://github.com/OpenAXES-IMU/OpenAXES and licensed under [Creative Commons Attribution-ShareAlike 3.0](https://creativecommons.org/licenses/by-sa/3.0/) (CC BY-SA 3.0).
+
+Changes made: I only used four IMU files from one recording (`triangle-150`). I removed unused columns and applied smoothing and a per-axis offset correction for analysis. The charts and tables in this README are derived from that data.
+
+The raw data is not included in this repository. Please download it from the source above.
