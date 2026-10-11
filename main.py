@@ -74,3 +74,20 @@ for name, df in imus.items():
     print(f"   removed {(~calm).sum()} rows; correlation {adxl_mag.corr(bmi_mag):.3f} "
           f"-> {adxl_mag[calm].corr(bmi_mag[calm]):.3f}; "
           f"ADXL355 spread {adxl_mag.std():.3f} -> {adxl_mag[calm].std():.3f}")
+
+print("\nSmoothed agreement and timing offset")
+for name, df in imus.items():
+    adxl_mag = (df[adxl_cols] ** 2).sum(axis=1) ** 0.5
+    bmi_mag = (df[bmi_cols] ** 2).sum(axis=1) ** 0.5
+
+    a = adxl_mag.rolling(10, center=True).mean()   # average of 10 readings = 0.1 s
+    b = bmi_mag.rolling(10, center=True).mean()
+
+    best_lag, best_corr = 0, -2
+    for lag in range(-20, 21):                     # shift BMI160 by up to 20 readings
+        c = a.corr(b.shift(lag))
+        if c > best_corr:
+            best_lag, best_corr = lag, c
+
+    print(f"{name}: smoothed correlation {a.corr(b):.3f}; "
+          f"best {best_corr:.3f} at shift {best_lag} readings ({best_lag * 10} ms)")
