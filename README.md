@@ -31,13 +31,13 @@ The top panel shows the radius sensor's two accelerometers sitting apart. In the
 
 You need Python 3. The raw data isn't included, so download it first.
 
-1. Download the OpenAXES dataset from https://github.com/OpenAXES-IMU/OpenAXES and find the `triangle-150` recording. 
+1. Download the OpenAXES dataset from https://data.uni-hannover.de/dataset/openaxes-example-robot-dataset and find the `triangle-150` recording. 
 2. Save the four IMU files in a folder called sample_data/ inside the project, named humerus.csv, radius.csv, carpus.csv and digitus.csv
 3. Then:
 
 ```bash
 git clone git@github.com:playfu1-d0ubt/data-analysis-report.git
-cd ADD-YOUR-REPO-NAME
+cd ~/data-analysis-report
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
@@ -63,7 +63,7 @@ The script prints seven sections to the terminal: data quality, accelerometer ag
 
 ## Data
 
-This project uses the OpenAXES robot-arm IMU dataset by Fritz Webering, Christian Fahnemann, Nils Stanislawski, available at https://github.com/OpenAXES-IMU/OpenAXES and licensed under [Creative Commons Attribution-ShareAlike 3.0](https://creativecommons.org/licenses/by-sa/3.0/) (CC BY-SA 3.0).
+This project uses the OpenAXES robot-arm IMU dataset by Fritz Webering, Christian Fahnemann, Nils Stanislawski, available at https://data.uni-hannover.de/dataset/openaxes-example-robot-dataset and licensed under [Creative Commons Attribution-ShareAlike 3.0](https://creativecommons.org/licenses/by-sa/3.0/) (CC BY-SA 3.0).
 
 Changes made: I only used four IMU files from one recording (`triangle-150`). I removed unused columns and applied smoothing and a per-axis offset correction for analysis. The charts and tables in this README are derived from that data.
 
