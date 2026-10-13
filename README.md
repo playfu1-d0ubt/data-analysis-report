@@ -31,19 +31,19 @@ The top panel shows the radius sensor's two accelerometers sitting apart. In the
 
 You need Python 3. The raw data isn't included, so download it first.
 
-1. Download the OpenAXES dataset from https://github.com/OpenAXES-IMU/OpenAXES and find the `triangle-150` recording. ADD-WHICH-FILES-AND-WHERE-TO-PUT-THEM.
-2. Then:
+1. Download the OpenAXES dataset from https://github.com/OpenAXES-IMU/OpenAXES and find the `triangle-150` recording. 
+2. Save the four IMU files in a folder called sample_data/ inside the project, named humerus.csv, radius.csv, carpus.csv and digitus.csv
+3. Then:
 
 ```bash
-git clone git@github.com:playfu1-d0ubt/ADD-YOUR-REPO-NAME.git
+git clone git@github.com:playfu1-d0ubt/data-analysis-report.git
 cd ADD-YOUR-REPO-NAME
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-python ADD-YOUR-SCRIPT-NAME.py
+python main.py
 ```
-
-ADD-ONE-LINE-ON-WHAT-THE-SCRIPT-PRINTS-AND-WHERE-THE-CHARTS-ARE-SAVED.
+The script prints seven sections to the terminal: data quality, accelerometer agreement, how much each segment moves, a spike check, smoothed agreement and timing offset, a per-axis comparison, and the correlation before and after offset removal. It also saves two charts in the charts/ folder: accel_agreement.png and radius_before_after.png.
 
 ## Limitations
 
