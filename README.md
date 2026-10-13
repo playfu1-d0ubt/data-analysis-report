@@ -4,11 +4,13 @@ A Python analysis of sensor data from four IMUs (motion sensors) strapped to a U
 
 At first they looked like they didn't. Tracing why turned out to be the interesting part.
 
-## The problem
+## What it does
+
+### The problem
 
 Each IMU contains two accelerometers (ADXL355 and BMI160) measuring the same motion. Comparing the total strength of their readings, two of the four sensors showed correlations near zero or even negative (humerus -0.08, radius -0.13), which would suggest a faulty sensor.
 
-## What I found
+### What I found
 
 The sensors agree. The apparent disagreement came from small per-axis calibration offsets, up to about 1.2 m/s² on a single axis, which distorted my first measure.
 
@@ -25,6 +27,24 @@ The sensors agree. The apparent disagreement came from small per-axis calibratio
 
 The top panel shows the radius sensor's two accelerometers sitting apart. In the bottom panel, after subtracting each axis's average offset, they overlap.
 
+## How to run
+
+You need Python 3. The raw data isn't included, so download it first.
+
+1. Download the OpenAXES dataset from https://github.com/OpenAXES-IMU/OpenAXES and find the `triangle-150` recording. ADD-WHICH-FILES-AND-WHERE-TO-PUT-THEM.
+2. Then:
+
+```bash
+git clone git@github.com:playfu1-d0ubt/ADD-YOUR-REPO-NAME.git
+cd ADD-YOUR-REPO-NAME
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python ADD-YOUR-SCRIPT-NAME.py
+```
+
+ADD-ONE-LINE-ON-WHAT-THE-SCRIPT-PRINTS-AND-WHERE-THE-CHARTS-ARE-SAVED.
+
 ## Limitations
 
 - I only analysed one recording (the `triangle-150` scenario), so I can't say whether the offsets stay the same across recordings.
@@ -33,6 +53,7 @@ The top panel shows the radius sensor's two accelerometers sitting apart. In the
 - I haven't confirmed the gyroscope units, so I don't state them.
 - The spikes appear one after another along the arm (digitus at 3.6 s, then carpus, radius and humerus), but I haven't explained why. The robot's own data would help, and I haven't used it yet.
 - The raw data isn't included in this repo.
+- No automated tests yet.
 
 ## What I learned
 
